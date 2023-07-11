@@ -1,13 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  FieldValues,
-  SubmitHandler,
-  ValidationMode,
-  useForm,
-} from "react-hook-form";
+import { FieldValues, ValidationMode, useForm } from "react-hook-form";
 import { z } from "zod";
 
-const LoginFormSchema = z.object({
+export const loginFormSchema = z.object({
   username: z.string().nonempty({ message: "Username is required" }).min(6, {
     message:
       "Invalid username! Valid username should contain minimum 6 characters",
@@ -18,32 +13,32 @@ const LoginFormSchema = z.object({
   }),
 });
 
-type LoginForm = z.infer<typeof LoginFormSchema>;
-export type LoginFormData = LoginForm & FieldValues;
+type LoginFormSchema = z.infer<typeof loginFormSchema>;
+export type LoginFormData = LoginFormSchema & FieldValues;
 
 type UseLoginFormOptions = {
-  defaultValues: LoginForm;
+  defaultValues: LoginFormSchema;
   validationMode: keyof ValidationMode;
 };
 
 export default function useLoginForm(options?: Partial<UseLoginFormOptions>) {
   const {
+    setValue,
+    getValues,
     register,
     handleSubmit,
     formState: { errors, defaultValues },
   } = useForm<LoginFormData>({
     mode: options?.validationMode,
-    resolver: zodResolver(LoginFormSchema),
+    resolver: zodResolver(loginFormSchema),
     defaultValues: options?.defaultValues,
   });
 
-  const onSubmit: SubmitHandler<LoginForm> = (data) =>
-    alert(`Data: ${JSON.stringify(data)}`);
-
   return {
+    setValue,
+    getValues,
     register,
     handleSubmit,
-    onSubmit,
     errors,
     defaultValues,
   };
