@@ -1,46 +1,29 @@
-# Getting Started with Create React App
+# Form Validations with `react-hook-form` and React `useState`
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+The main goal of this project is to experiment with two different approaches for form handling & validations. The first approach is by using `react-hook-form` library and `zod`, while the second one is by using the basic `useState`, zod, and computed properties that are native from React.
 
-In the project directory, you can run:
+The implementation strategy will revolve around extracting logics for form handling & validations to a custom hook. Then both approach will be compared specifically in the ease of testing & predictability. Testing becomes the main concern since in most modern software development lifecycle, a robust & testable codes are what differentiate whether a project is flexible to extension & refactoring or not. Basically, a very good & isolated unit testing will provide a great safety net for future enhancements and/or addition to the codes.
 
-### `npm start`
+## Result
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+From what I have tried, setting up `react-hook-form` for handling form state and also for input validations are much more easier & uses less codes. Unfortunately, this benefits comes with several major drawbacks such as:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- input component becomes tightly coupled with specific implementation for `react-hook-form`.
+- unit testing logics in custom hook & validation results is almost impossible
+- continuing with the previous point, the only way to test validation error is by rendering input components. Basically, we need integration testing with rendering real input component to test the validations & form submitting
+- too much magic & api surfaces
 
-### `npm test`
+On the other hand, setting up form state handling & validations using plain `useState` & `zod` is much more tedious work. We have to write a lot of custom codes to handle form state, checking dirty fields, and also validating error based on the given schema & validation rules. Despite that, the main benefits of this are:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- the input component can be as generic as possible without having to know about specific library implementations
+- logics are a lot easier to understand and reall straighforwards
+- testing is a breeze since everything is a function or a computed properties
+- less magics, more control, and logics are more predictable
 
-### `npm run build`
+## Closing
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Anyway, clone the code and see it for yourself. Leave PR for improvements.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Thank you!
