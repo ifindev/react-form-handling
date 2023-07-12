@@ -6,10 +6,10 @@ import { FieldErrors, FormSchema } from "../../types/form.type";
  *
  * @template TSchema - The generic Zod schema type.
  *
- * @param {TSchema} schema - The Zod schema to validate against.
+ * @param {FormSchema<TZodSchema>} schema - The Zod schema to validate against.
  * @param {z.infer<TSchema>} values - The values to validate.
  *
- * @returns {FieldErrors<z.infer<TSchema>>}
+ * @returns {FieldErrors<FormSchema<TZodSchema>>}
  *   - An object containing the field errors,
  *   where each field is a key and the value is either a single string or an array of strings.
  *   - If there are no validation errors, an empty object is returned.
