@@ -13,7 +13,7 @@ type Props<TFieldValues extends FieldValues> = Omit<
   register: UseFormRegister<TFieldValues>;
 };
 
-function FormInput<TFieldValues extends FieldValues>({
+function FormInputRHF<TFieldValues extends FieldValues>({
   label,
   className,
   error,
@@ -41,4 +41,4 @@ function FormInput<TFieldValues extends FieldValues>({
   );
 }
 
-export default FormInput;
+export default FormInputRHF;
