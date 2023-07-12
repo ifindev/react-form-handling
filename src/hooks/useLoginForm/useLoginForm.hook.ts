@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { z } from "zod";
+import { zodValidate } from "../../utils/form/form.util";
 
 export const loginFormSchema = z.object({
   username: z.string().nonempty({ message: "Username is required" }).min(6, {
@@ -67,17 +68,10 @@ export default function useLoginForm() {
 
   // #region ERROR VALIDATIONS
 
-  const validateForm = useMemo(() => {
-    return loginFormSchema.safeParse(formState);
-  }, [formState]);
-
-  const errors = useMemo(() => {
-    if (validateForm.success) {
-      return {};
-    }
-
-    return validateForm.error.flatten().fieldErrors;
-  }, [validateForm]);
+  const errors = useMemo(
+    () => zodValidate(loginFormSchema, formState),
+    [formState]
+  );
 
   const usernameError = useMemo(() => {
     if (errors.username && isTouched.username) {
