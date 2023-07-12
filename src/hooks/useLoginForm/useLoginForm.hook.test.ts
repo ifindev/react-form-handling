@@ -18,19 +18,19 @@ describe("useLoginFormHook", () => {
     expect(result.current.values.isTouched.password).toEqual(false);
   });
 
-  test("handleFieldChange should handle correct form state & touched state update", () => {
+  test("handleChange should handle correct form state & touched state update", () => {
     const username = "john_doe";
     const password = "123password";
     const { result } = renderHook(() => useLoginForm());
 
     act(() => {
-      result.current.handlers.handleFieldChange(username, "username");
+      result.current.handlers.handleChange(username, "username");
     });
     expect(result.current.values.formState.username).toEqual(username);
     expect(result.current.values.isTouched.username).toEqual(true);
 
     act(() => {
-      result.current.handlers.handleFieldChange(password, "password");
+      result.current.handlers.handleChange(password, "password");
     });
     expect(result.current.values.formState.password).toEqual(password);
     expect(result.current.values.isTouched.password).toEqual(true);
@@ -110,7 +110,7 @@ describe("useLoginFormHook", () => {
     const data: LoginFormSchema = { username: "user", password: "123" };
 
     act(() => {
-      result.current.handlers.handleFieldChange(data.username, "username");
+      result.current.handlers.handleChange(data.username, "username");
     });
 
     expect(result.current.values.usernameError).toEqual(
@@ -118,7 +118,7 @@ describe("useLoginFormHook", () => {
     );
 
     act(() => {
-      result.current.handlers.handleFieldChange(data.password, "password");
+      result.current.handlers.handleChange(data.password, "password");
     });
 
     expect(result.current.values.passwordError).toEqual(

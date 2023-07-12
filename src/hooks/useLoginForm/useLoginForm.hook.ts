@@ -1,6 +1,7 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import { z } from "zod";
 import { zodValidate } from "../../utils/form/form.util";
+import useForm from "../useForm/useForm.hook";
 
 export const loginFormSchema = z.object({
   username: z.string().nonempty({ message: "Username is required" }).min(6, {
@@ -19,89 +20,78 @@ type LoginFormTouchedState = {
 };
 
 export default function useLoginForm() {
-  // #region INTERNAL FORM STATES
+  // #region FORM STATE & HANDLERS
 
-  const [formState, setFormState] = useState<LoginFormSchema>({
+  const initialFormValues: LoginFormSchema = {
     username: "",
     password: "",
-  });
-
-  const [isTouched, setIsTouched] = useState<LoginFormTouchedState>({
+  };
+  const initialTouchedState: LoginFormTouchedState = {
     username: false,
     password: false,
+  };
+
+  const form = useForm({
+    schema: loginFormSchema,
+    initialFormValues,
+    initialTouchedState,
   });
 
   // #endregion
 
   // #region FORM HANDLERS
 
-  const handleFieldChange = useCallback(
-    (value: string, field: keyof LoginFormSchema) => {
-      setFormState((prevState) => ({
-        ...prevState,
-        [field]: value,
-      }));
-      setIsTouched((prevState) => ({ ...prevState, [field]: true }));
-    },
-    []
-  );
-
   const handleUsernameChange = useCallback(
     (evt: React.ChangeEvent<HTMLInputElement>) => {
-      handleFieldChange(evt.target.value, "username");
+      form.handlers.handleChange(evt.target.value, "username");
     },
-    [handleFieldChange]
+    [form.handlers]
   );
 
   const handlePasswordChange = useCallback(
     (evt: React.ChangeEvent<HTMLInputElement>) => {
-      handleFieldChange(evt.target.value, "password");
+      form.handlers.handleChange(evt.target.value, "password");
     },
-    [handleFieldChange]
+    [form.handlers]
   );
-
-  const handleBlur = useCallback((field: keyof LoginFormSchema) => {
-    setIsTouched((prevState) => ({ ...prevState, [field]: true }));
-  }, []);
-
   // #endregion
 
   // #region ERROR VALIDATIONS
 
   const errors = useMemo(
-    () => zodValidate(loginFormSchema, formState),
-    [formState]
+    () => zodValidate(loginFormSchema, form.values.formData),
+    [form.values]
   );
 
   const usernameError = useMemo(() => {
-    if (errors.username && isTouched.username) {
+    if (errors.username && form.values.isTouched.username) {
       return errors.username[0];
     }
 
     return undefined;
-  }, [errors, isTouched.username]);
+  }, [errors, form.values.isTouched.username]);
 
   const passwordError = useMemo(() => {
-    if (errors.password && isTouched.password) {
+    if (errors.password && form.values.isTouched.password) {
       return errors.password[0];
     }
 
     return undefined;
-  }, [errors, isTouched.password]);
+  }, [errors, form.values.isTouched.password]);
 
   // #endregion
 
   return {
     values: {
-      isTouched,
-      formState,
+      isTouched: form.values.isTouched,
+      formState: form.values.formData,
       errors,
       usernameError,
       passwordError,
     },
     handlers: {
-      handleBlur,
-      handleFieldChange,
+      handleBlur: form.handlers.handleBlur,
+      handleChange: form.handlers.handleChange,
       handleUsernameChange,
       handlePasswordChange,
     },
