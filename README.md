@@ -1,4 +1,4 @@
-# Form Validations with `react-hook-form` and Vanilla React Hooks
+# Form Validations with `react-hook-form` and Plain React Hooks
 
 ## Overview
 
@@ -15,7 +15,7 @@ From what I have tried, setting up `react-hook-form` for handling form state and
 - continuing with the previous point, the only way to test validation error is by rendering input components. Basically, we need integration testing with rendering real input component to test the validations & form submitting
 - too much magic & api surfaces
 
-On the other hand, setting up form state handling & validations using plain `useState` & `zod` is much more tedious work. We have to write a lot of custom codes to handle form state, checking dirty fields, and also validating error based on the given schema & validation rules. Despite that, the main benefits of this are:
+On the other hand, setting up form state handling & validations using plain react hooks & `zod` is much more tedious work. We have to write a lot of custom codes to handle form state, checking dirty fields, and also validating error based on the given schema & validation rules. Despite that, the main benefits of this are:
 
 - the input component can be as generic as possible without having to know about specific library implementations
 - logics are a lot easier to understand and reall straighforwards
