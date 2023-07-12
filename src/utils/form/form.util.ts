@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { FieldErrors } from "../../types/form.type";
+import { FieldErrors, FormSchema } from "../../types/form.type";
 
 /**
  * Validates values against a Zod schema and returns any validation errors.
@@ -14,15 +14,17 @@ import { FieldErrors } from "../../types/form.type";
  *   where each field is a key and the value is either a single string or an array of strings.
  *   - If there are no validation errors, an empty object is returned.
  */
-export function zodValidate<TSchema extends z.ZodTypeAny>(
-  schema: TSchema,
-  values: z.infer<TSchema>
-): FieldErrors<z.infer<TSchema>> {
+export function zodValidate<TZodSchema extends z.ZodTypeAny>(
+  schema: TZodSchema,
+  values: FormSchema<TZodSchema>
+): FieldErrors<FormSchema<TZodSchema>> {
   const result = schema.safeParse(values);
 
   if (result.success) {
-    return {} as FieldErrors<z.infer<TSchema>>;
+    return {} as FieldErrors<FormSchema<TZodSchema>>;
   }
 
-  return result.error.flatten().fieldErrors as FieldErrors<z.infer<TSchema>>;
+  return result.error.flatten().fieldErrors as FieldErrors<
+    FormSchema<TZodSchema>
+  >;
 }
