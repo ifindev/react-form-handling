@@ -13,7 +13,7 @@ export const loginFormSchema = z.object({
 });
 
 export type LoginFormSchema = z.infer<typeof loginFormSchema>;
-type LoginFormDirtyState = {
+type LoginFormTouchedState = {
   [K in keyof LoginFormSchema]: boolean;
 };
 
@@ -25,7 +25,7 @@ export default function useLoginForm() {
     password: "",
   });
 
-  const [isDirty, setIsDirty] = useState<LoginFormDirtyState>({
+  const [isTouched, setIsTouched] = useState<LoginFormTouchedState>({
     username: false,
     password: false,
   });
@@ -40,7 +40,7 @@ export default function useLoginForm() {
         ...prevState,
         [field]: value,
       }));
-      setIsDirty((prevState) => ({ ...prevState, [field]: true }));
+      setIsTouched((prevState) => ({ ...prevState, [field]: true }));
     },
     []
   );
@@ -60,7 +60,7 @@ export default function useLoginForm() {
   );
 
   const handleBlur = useCallback((field: keyof LoginFormSchema) => {
-    setIsDirty((prevState) => ({ ...prevState, [field]: true }));
+    setIsTouched((prevState) => ({ ...prevState, [field]: true }));
   }, []);
 
   // #endregion
@@ -80,26 +80,26 @@ export default function useLoginForm() {
   }, [validateForm]);
 
   const usernameError = useMemo(() => {
-    if (errors.username && isDirty.username) {
+    if (errors.username && isTouched.username) {
       return errors.username[0];
     }
 
     return undefined;
-  }, [errors, isDirty.username]);
+  }, [errors, isTouched.username]);
 
   const passwordError = useMemo(() => {
-    if (errors.password && isDirty.password) {
+    if (errors.password && isTouched.password) {
       return errors.password[0];
     }
 
     return undefined;
-  }, [errors, isDirty.password]);
+  }, [errors, isTouched.password]);
 
   // #endregion
 
   return {
     values: {
-      isDirty,
+      isTouched,
       formState,
       errors,
       usernameError,
