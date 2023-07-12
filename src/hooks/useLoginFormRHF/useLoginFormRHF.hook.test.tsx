@@ -1,10 +1,10 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { act, renderHook } from "@testing-library/react-hooks";
 import React from "react";
-import useLoginForm from "./useLoginForm.hook";
+import useLoginFormRHF from "./useLoginFormRHF.hook";
 
 function LoginFormTestWrapper() {
-  const { register, handleSubmit, errors } = useLoginForm();
+  const { register, handleSubmit, errors } = useLoginFormRHF();
 
   return (
     <form onSubmit={handleSubmit(() => {})}>
@@ -17,9 +17,9 @@ function LoginFormTestWrapper() {
   );
 }
 
-describe("useLoginForm hook", () => {
+describe("useLoginFormRHF hook", () => {
   test("fields update with correct values", () => {
-    const { result, rerender } = renderHook(() => useLoginForm());
+    const { result } = renderHook(() => useLoginFormRHF());
 
     const username = "";
     const password = "secret";

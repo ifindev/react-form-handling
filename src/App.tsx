@@ -1,17 +1,23 @@
 import React from "react";
+import { SubmitHandler } from "react-hook-form";
 import FormInput from "./components/FormInput";
-import useLoginForm, { LoginFormData } from "./hooks/useLoginForm.hook";
+import useLoginFormRHF, {
+  LoginFormData,
+} from "./hooks/useLoginFormRHF/useLoginFormRHF.hook";
 
 function App() {
   // #REGION React Hook Form
 
-  const loginForm = useLoginForm({ validationMode: "onBlur" });
+  const loginForm = useLoginFormRHF({ validationMode: "onBlur" });
+
+  const onSubmit: SubmitHandler<LoginFormData> = (data) =>
+    alert(`Data: ${JSON.stringify(data)}`);
 
   // #ENDREGION
 
   return (
     <div className="p-4 bg w-[300px]">
-      <form onSubmit={loginForm.handleSubmit(loginForm.onSubmit)}>
+      <form onSubmit={loginForm.handleSubmit(onSubmit)}>
         <FormInput<LoginFormData>
           type="text"
           name="username"

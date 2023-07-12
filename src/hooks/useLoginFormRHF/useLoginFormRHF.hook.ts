@@ -21,7 +21,9 @@ type UseLoginFormOptions = {
   validationMode: keyof ValidationMode;
 };
 
-export default function useLoginForm(options?: Partial<UseLoginFormOptions>) {
+export default function useLoginFormRHF(
+  options?: Partial<UseLoginFormOptions>
+) {
   const {
     setValue,
     getValues,
