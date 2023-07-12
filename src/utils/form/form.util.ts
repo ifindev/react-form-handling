@@ -1,11 +1,5 @@
 import { z } from "zod";
-
-/**
- * Generic type for errors returned from zod safe parsing the form schema
- */
-type FieldErrors<TFields extends object> = {
-  [K in keyof TFields]: string[] | undefined;
-};
+import { FieldErrors } from "../../types/form.type";
 
 /**
  * Validates values against a Zod schema and returns any validation errors.
