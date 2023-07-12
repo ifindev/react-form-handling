@@ -1,4 +1,4 @@
-# Form Validations with `react-hook-form` and React `useState`
+# Form Validations with `react-hook-form` and Vanilla React Hooks
 
 ## Overview
 
