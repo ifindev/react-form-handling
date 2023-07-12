@@ -12,7 +12,7 @@ export const loginFormSchema = z.object({
   }),
 });
 
-type LoginFormSchema = z.infer<typeof loginFormSchema>;
+export type LoginFormSchema = z.infer<typeof loginFormSchema>;
 type LoginFormDirtyState = {
   [K in keyof LoginFormSchema]: boolean;
 };
@@ -40,6 +40,7 @@ export default function useLoginForm() {
         ...prevState,
         [field]: value,
       }));
+      setIsDirty((prevState) => ({ ...prevState, [field]: true }));
     },
     []
   );

@@ -1,7 +1,7 @@
 import { act, renderHook } from "@testing-library/react-hooks";
 import { ChangeEvent } from "react";
 
-import useLoginForm from "./useLoginForm.hook";
+import useLoginForm, { LoginFormSchema } from "./useLoginForm.hook";
 
 describe("useLoginFormHook", () => {
   test("login form fields should have correct initial values", () => {
@@ -18,7 +18,7 @@ describe("useLoginFormHook", () => {
     expect(result.current.values.isDirty.password).toEqual(false);
   });
 
-  test("handleFieldChange should handle correct form state update", () => {
+  test("handleFieldChange should handle correct form state & dirty state update", () => {
     const username = "john_doe";
     const password = "123password";
     const { result } = renderHook(() => useLoginForm());
@@ -27,11 +27,13 @@ describe("useLoginFormHook", () => {
       result.current.handlers.handleFieldChange(username, "username");
     });
     expect(result.current.values.formState.username).toEqual(username);
+    expect(result.current.values.isDirty.username).toEqual(true);
 
     act(() => {
       result.current.handlers.handleFieldChange(password, "password");
     });
     expect(result.current.values.formState.password).toEqual(password);
+    expect(result.current.values.isDirty.password).toEqual(true);
   });
 
   test("handleUsernameChange updates the username field in form state", () => {
@@ -100,5 +102,27 @@ describe("useLoginFormHook", () => {
       result.current.handlers.handleBlur("password");
     });
     expect(result.current.values.passwordError).toEqual("Password is required");
+  });
+
+  test("minimum characters error should not be empty if invalid input is given", () => {
+    const { result } = renderHook(() => useLoginForm());
+
+    const data: LoginFormSchema = { username: "user", password: "123" };
+
+    act(() => {
+      result.current.handlers.handleFieldChange(data.username, "username");
+    });
+
+    expect(result.current.values.usernameError).toEqual(
+      "Invalid username! Valid username should contain minimum 6 characters"
+    );
+
+    act(() => {
+      result.current.handlers.handleFieldChange(data.password, "password");
+    });
+
+    expect(result.current.values.passwordError).toEqual(
+      "Invalid password! Valid password should contain minimum 6 characters"
+    );
   });
 });
