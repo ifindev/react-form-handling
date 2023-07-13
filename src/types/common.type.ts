@@ -66,10 +66,7 @@ export type MapNestedObjects<T extends object, TNew> = {
  *
  * type InValidType = {
  *   one: never;
- *   nested: {
- *     a: never;
- *     b: never;
- *   }
+ *   nested: never
  * }
  */
 export type CheckNestedObject<T extends object> = {
