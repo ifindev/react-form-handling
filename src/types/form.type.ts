@@ -26,7 +26,7 @@ export type FormFieldValues<TZodSchema extends z.ZodTypeAny> = {
  * mapped boolean typescript object type from the schema keys
  */
 export type FormTouchedState<TZodSchema extends z.ZodTypeAny> = {
-  [K in keyof z.infer<TZodSchema>]: boolean;
+  [K in keyof FormSchema<TZodSchema>]: boolean;
 };
 
 /**
