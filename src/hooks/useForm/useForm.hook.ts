@@ -5,12 +5,13 @@ import {
   FormFieldValues,
   FormSchema,
   FormTouchedState,
+  NonNestedZodSchema,
 } from "../../types/form.type";
 import { zodValidate } from "../../utils/form/form.util";
 
 type UseFormOptions<TZodSchema extends z.ZodTypeAny> = {
-  schema: TZodSchema;
-  initialFormValues: FormSchema<TZodSchema>;
+  schema: NonNestedZodSchema<TZodSchema>;
+  initialFormValues: FormFieldValues<TZodSchema>;
   initialTouchedState: FormTouchedState<TZodSchema>;
 };
 
@@ -38,7 +39,7 @@ export default function useForm<TZodSchema extends z.ZodTypeAny>(
   // #region INTERNAL FORM STATE
 
   const [formData, setFormData] =
-    useState<FormSchema<TZodSchema>>(initialFormValues);
+    useState<FormFieldValues<TZodSchema>>(initialFormValues);
   const [isTouched, setIsTouched] =
     useState<FormTouchedState<TZodSchema>>(initialTouchedState);
 
