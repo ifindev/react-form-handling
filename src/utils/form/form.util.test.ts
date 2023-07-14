@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { zodValidate } from "./form.util";
+import { FormSchema, FormTouchedState } from "../../types/form.type";
+import { getFieldError, zodValidate } from "./form.util";
 
 const loginFormSchema = z.object({
   username: z
@@ -44,6 +45,58 @@ describe("form util", () => {
       const errors = zodValidate(loginFormSchema, validValues);
 
       expect(errors.username).toBeUndefined();
+    });
+  });
+
+  describe("getFieldError", () => {
+    const schema = z.object({
+      username: z.string().nonempty({ message: "Username is required" }),
+      password: z.string().nonempty({ message: "Password is required" }),
+    });
+
+    it("returns the error message for a touched field with an error", () => {
+      const values: FormSchema<typeof schema> = {
+        username: "",
+        password: "123",
+      };
+
+      const touchedState: FormTouchedState<typeof schema> = {
+        username: true,
+        password: true,
+      };
+
+      const error = getFieldError(schema, values, touchedState, "username");
+      expect(error).toEqual("Username is required");
+    });
+
+    it("returns undefined for a field with no error", () => {
+      const values: FormSchema<typeof schema> = {
+        username: "",
+        password: "123",
+      };
+
+      const touchedState: FormTouchedState<typeof schema> = {
+        username: false,
+        password: true,
+      };
+
+      const error = getFieldError(schema, values, touchedState, "password");
+      expect(error).toBeUndefined();
+    });
+
+    it("returns undefined for a field that is not touched", () => {
+      const values: FormSchema<typeof schema> = {
+        username: "",
+        password: "123",
+      };
+
+      const touchedState: FormTouchedState<typeof schema> = {
+        username: false,
+        password: true,
+      };
+
+      const error = getFieldError(schema, values, touchedState, "username");
+      expect(error).toBeUndefined();
     });
   });
 });
