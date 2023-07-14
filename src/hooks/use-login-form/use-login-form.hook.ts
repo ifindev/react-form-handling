@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from "react";
 import { z } from "zod";
-import { FormSchema } from "../../types/form.type";
-import { zodValidate } from "../../utils/form/form.util";
+import { FormSchema, FormTouchedState } from "../../types/form.type";
+import { getFieldError } from "../../utils/form/form.util";
 import useForm from "../use-form/use-form.hook";
 
 export const loginFormSchema = z.object({
@@ -16,9 +16,7 @@ export const loginFormSchema = z.object({
 });
 
 export type LoginFormSchema = FormSchema<typeof loginFormSchema>;
-type LoginFormTouchedState = {
-  [K in keyof LoginFormSchema]: boolean;
-};
+type LoginFormTouchedState = FormTouchedState<typeof loginFormSchema>;
 
 export default function useLoginForm() {
   // #region FORM STATE & HANDLERS
@@ -59,26 +57,27 @@ export default function useLoginForm() {
 
   // #region ERROR VALIDATIONS
 
-  const errors = useMemo(
-    () => zodValidate(loginFormSchema, form.values.formData),
+  const usernameError = useMemo(
+    () =>
+      getFieldError(
+        loginFormSchema,
+        form.values.formData,
+        form.values.isTouched,
+        "username"
+      ),
     [form.values]
   );
 
-  const usernameError = useMemo(() => {
-    if (errors.username && form.values.isTouched.username) {
-      return errors.username[0];
-    }
-
-    return undefined;
-  }, [errors, form.values.isTouched.username]);
-
-  const passwordError = useMemo(() => {
-    if (errors.password && form.values.isTouched.password) {
-      return errors.password[0];
-    }
-
-    return undefined;
-  }, [errors, form.values.isTouched.password]);
+  const passwordError = useMemo(
+    () =>
+      getFieldError(
+        loginFormSchema,
+        form.values.formData,
+        form.values.isTouched,
+        "password"
+      ),
+    [form.values]
+  );
 
   // #endregion
 
@@ -86,7 +85,6 @@ export default function useLoginForm() {
     values: {
       isTouched: form.values.isTouched,
       formState: form.values.formData,
-      errors,
       usernameError,
       passwordError,
     },
