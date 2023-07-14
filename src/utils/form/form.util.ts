@@ -3,6 +3,7 @@ import {
   FieldErrors,
   FormSchema,
   FormTouchedState,
+  NonNestedZodSchema,
 } from "../../types/form.type";
 
 /**
@@ -47,7 +48,7 @@ export function getFieldError<
   TZodSchema extends z.ZodTypeAny,
   TField extends keyof FormSchema<TZodSchema>
 >(
-  schema: TZodSchema,
+  schema: NonNestedZodSchema<TZodSchema>,
   values: FormSchema<TZodSchema>,
   touchedState: FormTouchedState<TZodSchema>,
   field: TField
