@@ -2,7 +2,6 @@ import { useCallback, useMemo, useState } from "react";
 import { z } from "zod";
 import {
   FormErrorState,
-  FormFieldValues,
   FormSchema,
   FormTouchedState,
   NonNestedZodSchema,
@@ -11,14 +10,14 @@ import { zodValidate } from "../../utils/form/form.util";
 
 type UseFormOptions<TZodSchema extends z.ZodTypeAny> = {
   schema: NonNestedZodSchema<TZodSchema>;
-  initialFormValues: FormFieldValues<TZodSchema>;
+  initialFormValues: FormSchema<TZodSchema>;
   initialTouchedState: FormTouchedState<TZodSchema>;
 };
 
 type UseFormResult<TZodSchema extends z.ZodTypeAny> = {
   values: {
     errors: FormErrorState<TZodSchema>;
-    formData: FormFieldValues<TZodSchema>;
+    formData: FormSchema<TZodSchema>;
     isTouched: FormTouchedState<TZodSchema>;
   };
   handlers: {
@@ -39,7 +38,7 @@ export default function useForm<TZodSchema extends z.ZodTypeAny>(
   // #region INTERNAL FORM STATE
 
   const [formData, setFormData] =
-    useState<FormFieldValues<TZodSchema>>(initialFormValues);
+    useState<FormSchema<TZodSchema>>(initialFormValues);
   const [isTouched, setIsTouched] =
     useState<FormTouchedState<TZodSchema>>(initialTouchedState);
 

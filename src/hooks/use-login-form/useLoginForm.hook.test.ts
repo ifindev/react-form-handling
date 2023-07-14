@@ -1,7 +1,7 @@
 import { act, renderHook } from "@testing-library/react-hooks";
 import { ChangeEvent } from "react";
 
-import useLoginForm, { LoginFormSchema } from "./useLoginForm.hook";
+import useLoginForm, { LoginFormSchema } from "./use-login-form.hook";
 
 describe("useLoginFormHook", () => {
   test("login form fields should have correct initial values", () => {

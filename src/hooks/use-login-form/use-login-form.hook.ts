@@ -1,7 +1,8 @@
 import React, { useCallback, useMemo } from "react";
 import { z } from "zod";
+import { FormSchema } from "../../types/form.type";
 import { zodValidate } from "../../utils/form/form.util";
-import useForm from "../useForm/useForm.hook";
+import useForm from "../use-form/use-form.hook";
 
 export const loginFormSchema = z.object({
   username: z.string().nonempty({ message: "Username is required" }).min(6, {
@@ -14,7 +15,7 @@ export const loginFormSchema = z.object({
   }),
 });
 
-export type LoginFormSchema = z.infer<typeof loginFormSchema>;
+export type LoginFormSchema = FormSchema<typeof loginFormSchema>;
 type LoginFormTouchedState = {
   [K in keyof LoginFormSchema]: boolean;
 };

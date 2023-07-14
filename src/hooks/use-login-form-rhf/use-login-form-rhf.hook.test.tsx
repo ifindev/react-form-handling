@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { act, renderHook } from "@testing-library/react-hooks";
 import React from "react";
-import useLoginFormRHF from "./useLoginFormRHF.hook";
+import useLoginFormRHF from "./use-login-form-rhf";
 
 function LoginFormTestWrapper() {
   const { register, handleSubmit, errors } = useLoginFormRHF();

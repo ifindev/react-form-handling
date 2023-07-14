@@ -1,9 +1,9 @@
 import React from "react";
 import { SubmitHandler } from "react-hook-form";
-import FormInputRHF from "../../components/FormInputRHF";
+import FormInputRHF from "../../components/form-input-rhf";
 import useLoginFormRHF, {
   LoginFormData,
-} from "../../hooks/useLoginFormRHF/useLoginFormRHF.hook";
+} from "../../hooks/use-login-form-rhf/use-login-form-rhf";
 
 export default function LoginRHFView() {
   // #REGION React Hook Form
